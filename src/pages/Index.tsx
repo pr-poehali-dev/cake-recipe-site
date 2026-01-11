@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -56,6 +56,14 @@ const Index = () => {
     ? recipes 
     : recipes.filter(r => r.category === activeCategory);
 
+  useEffect(() => {
+    document.title = 'Сладкие Рецепты — Торты, Десерты и Выпечка с Пошаговыми Фото';
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Лучшие рецепты тортов, десертов и выпечки с подробными пошаговыми фотографиями. Простые и проверенные рецепты для домашней кухни.');
+    }
+  }, []);
+
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
@@ -73,7 +81,7 @@ const Index = () => {
               <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                 <Icon name="Cake" className="text-white" size={24} />
               </div>
-              <h1 className="text-3xl font-bold text-foreground">Сладкие Рецепты</h1>
+              <span className="text-3xl font-bold text-foreground">Сладкие Рецепты</span>
             </div>
             <nav className="hidden md:flex gap-6">
               <a href="#recipes" className="text-foreground/70 hover:text-primary transition-colors">Рецепты</a>
@@ -87,10 +95,10 @@ const Index = () => {
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12 animate-fade-in">
-            <h2 className="text-5xl md:text-7xl font-bold text-foreground mb-4">
+            <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-4">
               Вкусные рецепты
               <span className="block text-primary mt-2">каждый день</span>
-            </h2>
+            </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Пошаговые инструкции с фотографиями для приготовления тортов, десертов и выпечки
             </p>
