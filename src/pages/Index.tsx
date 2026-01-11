@@ -26,6 +26,14 @@ const Index = () => {
       image: 'https://cdn.poehali.dev/projects/1a192e60-59e0-423b-8b04-30a55fb7f37a/files/c3a67c84-9a0c-41f8-8117-7af632e857d7.jpg',
       description: 'Нежный шоколадный бисквит с кремовой прослойкой и свежими ягодами',
       steps: 5,
+      prepTime: 'PT30M',
+      cookTime: 'PT60M',
+      totalTime: 'PT90M',
+      recipeYield: '8-10',
+      calories: '350',
+      ingredients: ['300г муки', '200г сахара', '100г какао', '4 яйца', '200мл молока', '150г масла', 'свежие ягоды'],
+      rating: 4.8,
+      ratingCount: 124,
     },
     {
       id: 2,
@@ -36,6 +44,14 @@ const Index = () => {
       image: 'https://cdn.poehali.dev/projects/1a192e60-59e0-423b-8b04-30a55fb7f37a/files/ff115518-e415-4cb5-9def-9a54be439c17.jpg',
       description: 'Хрустящее песочное тесто с ванильным кремом и свежей клубникой',
       steps: 4,
+      prepTime: 'PT20M',
+      cookTime: 'PT40M',
+      totalTime: 'PT60M',
+      recipeYield: '6-8',
+      calories: '280',
+      ingredients: ['250г муки', '100г сахара', '150г масла', '400г клубники', '200мл сливок', '2 яйца'],
+      rating: 4.9,
+      ratingCount: 89,
     },
     {
       id: 3,
@@ -46,6 +62,14 @@ const Index = () => {
       image: 'https://cdn.poehali.dev/projects/1a192e60-59e0-423b-8b04-30a55fb7f37a/files/728e5276-9bb2-4864-a5b9-33868abbcecc.jpg',
       description: 'Классические слоёные круассаны с золотистой корочкой',
       steps: 8,
+      prepTime: 'PT45M',
+      cookTime: 'PT75M',
+      totalTime: 'PT120M',
+      recipeYield: '12',
+      calories: '220',
+      ingredients: ['500г муки', '250г масла', '50г сахара', '10г дрожжей', '250мл молока', '1 яйцо'],
+      rating: 4.7,
+      ratingCount: 156,
     },
   ];
 
@@ -62,7 +86,50 @@ const Index = () => {
     if (metaDescription) {
       metaDescription.setAttribute('content', 'Лучшие рецепты тортов, десертов и выпечки с подробными пошаговыми фотографиями. Простые и проверенные рецепты для домашней кухни.');
     }
-  }, []);
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org/",
+      "@type": "Recipe",
+      "name": selectedRecipe.title,
+      "image": [selectedRecipe.image],
+      "author": {
+        "@type": "Organization",
+        "name": "Сладкие Рецепты"
+      },
+      "datePublished": "2026-01-11",
+      "description": selectedRecipe.description,
+      "prepTime": selectedRecipe.prepTime,
+      "cookTime": selectedRecipe.cookTime,
+      "totalTime": selectedRecipe.totalTime,
+      "recipeYield": selectedRecipe.recipeYield,
+      "recipeCategory": selectedRecipe.category === 'cakes' ? 'Торт' : selectedRecipe.category === 'desserts' ? 'Десерт' : 'Выпечка',
+      "recipeCuisine": "Европейская",
+      "keywords": "рецепт, " + selectedRecipe.title.toLowerCase(),
+      "nutrition": {
+        "@type": "NutritionInformation",
+        "calories": selectedRecipe.calories + " калорий"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": selectedRecipe.rating,
+        "ratingCount": selectedRecipe.ratingCount
+      },
+      "recipeIngredient": selectedRecipe.ingredients,
+      "recipeInstructions": Array.from({ length: selectedRecipe.steps }, (_, i) => ({
+        "@type": "HowToStep",
+        "name": "Шаг " + (i + 1),
+        "text": "Подробная инструкция шага " + (i + 1),
+        "image": selectedRecipe.image
+      }))
+    });
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [selectedRecipe]);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -168,14 +235,26 @@ const Index = () => {
                         <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
                           {recipe.description}
                         </p>
-                        <div className="flex items-center justify-between text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <Icon name="Clock" size={16} />
-                            <span>{recipe.time}</span>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Icon name="Clock" size={16} />
+                              <span>{recipe.time}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Icon name="List" size={16} />
+                              <span>{recipe.steps} шагов</span>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <Icon name="List" size={16} />
-                            <span>{recipe.steps} шагов</span>
+                          <div className="flex items-center justify-between text-sm">
+                            <div className="flex items-center gap-1 text-amber-500">
+                              <Icon name="Star" size={16} fill="currentColor" />
+                              <span className="font-medium">{recipe.rating}</span>
+                              <span className="text-muted-foreground">({recipe.ratingCount})</span>
+                            </div>
+                            <div className="text-muted-foreground">
+                              <span>{recipe.calories} ккал</span>
+                            </div>
                           </div>
                         </div>
                       </CardContent>
@@ -207,6 +286,11 @@ const Index = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <Badge className="bg-primary/90 text-white">{selectedRecipe.difficulty}</Badge>
                   <Badge variant="outline" className="border-primary/50 text-primary">{selectedRecipe.time}</Badge>
+                  <div className="flex items-center gap-1 text-amber-500 ml-auto">
+                    <Icon name="Star" size={18} fill="currentColor" />
+                    <span className="font-semibold text-foreground">{selectedRecipe.rating}</span>
+                    <span className="text-sm text-muted-foreground">({selectedRecipe.ratingCount} отзывов)</span>
+                  </div>
                 </div>
                 
                 <h3 className="text-3xl font-bold mb-4 text-foreground">{selectedRecipe.title}</h3>
@@ -219,7 +303,7 @@ const Index = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold text-foreground">Порции</h4>
-                      <p className="text-sm text-muted-foreground">8-10 порций</p>
+                      <p className="text-sm text-muted-foreground">{selectedRecipe.recipeYield} порций</p>
                     </div>
                   </div>
                   
@@ -240,6 +324,16 @@ const Index = () => {
                     <div>
                       <h4 className="font-semibold text-foreground">Пошаговые фото</h4>
                       <p className="text-sm text-muted-foreground">{selectedRecipe.steps} детальных этапов с иллюстрациями</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <Icon name="Flame" size={16} className="text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-foreground">Калорийность</h4>
+                      <p className="text-sm text-muted-foreground">{selectedRecipe.calories} ккал на порцию</p>
                     </div>
                   </div>
                 </div>
