@@ -81,7 +81,7 @@ const Index = () => {
     : recipes.filter(r => r.category === activeCategory);
 
   useEffect(() => {
-    document.title = 'Сладкие Рецепты — Торты, Десерты и Выпечка с Пошаговыми Фото';
+    document.title = 'ВкусТорт — Рецепты Тортов, Десертов и Выпечки с Пошаговыми Фото';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute('content', 'Лучшие рецепты тортов, десертов и выпечки с подробными пошаговыми фотографиями. Простые и проверенные рецепты для домашней кухни.');
@@ -96,7 +96,7 @@ const Index = () => {
       "image": [selectedRecipe.image],
       "author": {
         "@type": "Organization",
-        "name": "Сладкие Рецепты"
+        "name": "ВкусТорт"
       },
       "datePublished": "2026-01-11",
       "description": selectedRecipe.description,
@@ -148,7 +148,7 @@ const Index = () => {
               <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                 <Icon name="Cake" className="text-white" size={24} />
               </div>
-              <span className="text-3xl font-bold text-foreground">Сладкие Рецепты</span>
+              <span className="text-3xl font-bold text-foreground">ВкусТорт</span>
             </div>
             <nav className="hidden md:flex gap-6">
               <a href="#recipes" className="text-foreground/70 hover:text-primary transition-colors">Рецепты</a>
@@ -388,7 +388,7 @@ const Index = () => {
                 <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                   <Icon name="Cake" className="text-white" size={18} />
                 </div>
-                <h3 className="text-xl font-bold text-foreground">Сладкие Рецепты</h3>
+                <h3 className="text-xl font-bold text-foreground">ВкусТорт</h3>
               </div>
               <p className="text-muted-foreground text-sm">
                 Лучшие рецепты тортов, десертов и выпечки с пошаговыми фотографиями
@@ -421,7 +421,7 @@ const Index = () => {
           </div>
           
           <div className="border-t border-border/40 pt-8 text-center text-sm text-muted-foreground">
-            <p>© 2026 Сладкие Рецепты. Все рецепты проверены и протестированы</p>
+            <p>© 2026 ВкусТорт. Все рецепты проверены и протестированы</p>
           </div>
         </div>
       </footer>
