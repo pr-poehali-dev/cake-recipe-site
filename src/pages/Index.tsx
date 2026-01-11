@@ -338,10 +338,39 @@ const Index = () => {
                   </div>
                 </div>
 
-                <Button className="w-full bg-primary hover:bg-primary/90 text-white" size="lg">
-                  <Icon name="BookOpen" size={20} className="mr-2" />
-                  Открыть полный рецепт
-                </Button>
+                <div className="space-y-3">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white" size="lg">
+                    <Icon name="BookOpen" size={20} className="mr-2" />
+                    Открыть полный рецепт
+                  </Button>
+                  
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      className="flex-1 border-border/50 hover:bg-primary/10"
+                      onClick={() => {
+                        const url = encodeURIComponent(window.location.href);
+                        const title = encodeURIComponent(selectedRecipe.title);
+                        window.open(`https://vk.com/share.php?url=${url}&title=${title}`, '_blank', 'width=600,height=400');
+                      }}
+                    >
+                      <Icon name="Share2" size={16} className="mr-2" />
+                      ВКонтакте
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="flex-1 border-border/50 hover:bg-primary/10"
+                      onClick={() => {
+                        const url = encodeURIComponent(window.location.href);
+                        const text = encodeURIComponent(`${selectedRecipe.title} — рецепт на ВкусТорт`);
+                        window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
+                      }}
+                    >
+                      <Icon name="Send" size={16} className="mr-2" />
+                      Telegram
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </div>
           </Card>
